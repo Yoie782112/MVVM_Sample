@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MVPTest</string>
+
+    <string name="google_web_fonts_api_key">webfonts/v1/webfonts?key=AIzaSyBbfap0P27GphwHMWB9OHSYXG_wnrAAklo</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
+
+</resources>
