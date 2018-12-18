@@ -1,8 +1,11 @@
 package com.yoie.com.mvptest.view;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableInt;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,10 +43,11 @@ public class FontActivity extends AppCompatActivity implements Observer {
     private FontAdapter mAdapter;
     private ArrayList<Item> mItems = new ArrayList<>();
     private ContentFontBinding mContentFontBinding;
-
     private int count = 0;
-
     private FontViewModel mFontViewModel;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +55,7 @@ public class FontActivity extends AppCompatActivity implements Observer {
         initDataBinding();
         setupListFontView();
         setupObserver(mFontViewModel);
-        //task1();
     }
-
     public void setupObserver(Observable observable) {
         observable.addObserver(this);
     }
@@ -73,54 +75,14 @@ public class FontActivity extends AppCompatActivity implements Observer {
         if (observable instanceof FontViewModel) {
             FontViewModel fontViewModel = (FontViewModel) observable;
             mItems = fontViewModel.getFontList();
-            mItems.get(count).setKind("11111");
+            mItems.get(count).setKind("refresh tag");
             mAdapter.setFontList(mItems);
             mAdapter.notifyDataSetChanged();
             count ++;
-//            mRecyclerView.setAdapter(mAdapter);
-              mAdapter.notifyDataSetChanged();
-
-
+            mAdapter.notifyDataSetChanged();
         }
     }
 
-    public void task1(){
-        Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl("https://api.douban.com/v2/movie/") //设置网络请求的Url地址
-                .baseUrl("https://www.googleapis.com/webfonts/v1/") //设置网络请求的Url地址
-                .addConverterFactory(GsonConverterFactory.create()) //设置数据解析器
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        //https://www.googleapis.com/webfonts/v1/
-
-
-        FontService request = retrofit.create(FontService.class);
-        //Observable<MovieEntity> observable1 = request.getCall(0,10);
-        io.reactivex.Observable<Font> observable1 = request.fetchFont();
-
-        observable1.subscribeOn(Schedulers.io())               // 在IO线程进行网络请求
-                .observeOn(AndroidSchedulers.mainThread())  // 回到主线程 处理请求结果
-                .subscribe(new io.reactivex.Observer<Font>() {
-                    // 发送请求后调用该复写方法（无论请求成功与否）
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.e("yoie", "onSubscribe: ");
-                    }
-                    @Override
-                    public void onNext(Font result) {
-                        Log.e("yoie", "onNext: ");
-                    }
-                    @Override
-                    public void onComplete() {
-                        Log.d("yoie", "请求成功");
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("yoie", "请求失败");
-                    }
-                });
-
-    }
 
 
 }

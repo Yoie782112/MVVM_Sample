@@ -15,10 +15,8 @@ public class CacheDataMgr {
 
     private CacheDataMgr(Context context){
         this.mContext = context;
-        // 這裡面跑很了多code，建立物件需要花費很多資源
     }
 
-    // 多執行緒時，當物件需要被建立時才使用synchronized保證Singleton一定是單一的 ，增加程式校能
     public static CacheDataMgr getInstance(Context context){
         if(instance == null){
             synchronized(CacheDataMgr.class){
